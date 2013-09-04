@@ -5,6 +5,7 @@ function PirateShip (name, cannons, crew) {
   this.treasure = (Math.floor(Math.random() * (50)) + 20);
 
   this.add = function(newMate) {
+    newMate.ship = this;
     this.crew.push(newMate);      
   };
 
@@ -41,6 +42,8 @@ function PirateShip (name, cannons, crew) {
         });
         // making that pirate Captain and removing 
         this.crew[indexVal].role = new Captain();
+
+        this.captain = this.crew[indexVal]
         // this.add(new Pirate(this.crew[indexVal].name, new Captain()));
         // this.crew.splice(indexVal, 1);
       };
@@ -62,6 +65,23 @@ function PirateShip (name, cannons, crew) {
 
 };
 
+// this would extend the object pirate to the additional captain properties
+// while preserving the original pirate object. this new object would be returned
+// as bob.
+bob = $.extend({}, pirate, captain);
+
+// removing the empty object argument, this would mutate pirate object.
+bob = $.extend(pirate, captain);
+
+// to delete properties from an  object
+for (prop in bob) { 
+  if (bob.hasOwnProperty(prop)) {
+   // add any extra exceptions with & prop !== "__"
+    if(prop !== "name") {
+      delete bob[prop]; 
+    }
+  }; 
+};
 
 
 function Pirate (name, role) {
@@ -69,6 +89,23 @@ function Pirate (name, role) {
   this.morale = (Math.floor(Math.random() * (10)) + 1);
   this.role = role;
 };
+
+// delete myJSONObject.regex;
+
+// mason
+
+captainAttrs = {
+  balbhalbhab: 'asgasgas',
+  killCrewMember: function(target){
+    // kill someone here
+  }
+}
+
+// $.extend(this.captain, captainAttrs)
+
+// end mason
+
+
 
 
 // roles of the pirates
@@ -108,9 +145,10 @@ function Captain () {
 function FirstMate () {
   this.title = "First Mate"
   this.attemptMutiny = function(ship) {
-    var shipMorale;
+    var shipMorale = 0;
     var captainIndex;
     var firstMateIndex;
+    // chance of zero will never achieve successful mutiny
     var chance = 1;
     ship.crew.forEach(function(pirate, index) {
       if (pirate.role.title === "Captain") {
@@ -118,19 +156,18 @@ function FirstMate () {
       } 
       else if(pirate.role.title === "First Mate") {
         firstMateIndex = index;
+        shipMorale += pirate.morale;
       }
-      else {shipMorale += pirate.morale;};
+      else {shipMorale += pirate.morale};
     });
-    shipMorale = shipMorale/ship.crew.length;
-    if (shipMorale <= 7) {
-      chance = 1
-    }
+    shipMorale = Math.floor(shipMorale/(ship.crew.length - 1));
+
     if (shipMorale <= 5) {
       chance = 2
     }
-    else if (shipMorale <= 3) {
+    if (shipMorale <= 3) {
       chance = 3
-    } else {chance = 0}
+    }
 
     if((Math.floor(Math.random() * (chance)) + 1) > 1) {
       ship.crew[firstMateIndex].role = new Captain();
@@ -148,6 +185,14 @@ function Mate () {
     this.morale--;
   };
 };
+
+hunter = new PirateShip()
+// hunter.add(new Pirate("Steve", new Captain()))
+// hunter.add(new Pirate("Genius", new FirstMate()))
+hunter.add(new Pirate("Steve", new Mate()))
+hunter.add(new Pirate("Genius", new Mate()))
+hunter.add(new Pirate("Guy", new Mate()))
+hunter.add(new Pirate("Dude", new Mate()))
 
 // creates dude the Pirate with the role of Captain
 
