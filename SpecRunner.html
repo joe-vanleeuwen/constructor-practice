@@ -4,6 +4,8 @@
 <head>
   <title>Jasmine Spec Runner</title>
 
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
   <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.3.1/jasmine_favicon.png">
   <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
   <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
@@ -45,7 +47,15 @@
   </script>
 
 </head>
-
+<h2>Pirates!</h2>
+  <ul>
+    <li><strong>Create a ship:</strong> exampleShip = new PirateShip()</li>
+    <li><strong>Add a pirate:</strong> exampleShip.add(new Pirate("ExampleDude", new Mate()))</li>
+    <li><strong>Make at least 3 pirates and you can vote on a Captain:</strong> exampleShip.chooseCaptain()</li>
+    <li><strong>The Captain can choose a First Mate:</strong> exampleShip.crew[indexOfCaptain].role.chooseFirstMate(exampleShip)</li>
+    <li><strong>The Captain can also command mates to walk the plank:</strong> exampleShip.crew[indexOfCaptain].role.walkPlankCommand(exampleShip, "exampleDude")</li>
+    <li><strong>Watch out, Captain! The First Mate can attempt a mutiny! (not working yet):</strong> exampleShip.crew[indexOfFirstMate].role.attemptMutiny(exampleShip)</li>
+  </ul>
 <body>
 </body>
 </html>
