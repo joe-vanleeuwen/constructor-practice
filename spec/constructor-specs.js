@@ -2,8 +2,10 @@ describe("the constructor, ", function() {
 
 	describe("PirateShip", function() {
 
+		theHorizonDrifter = new PirateShip();
+
 		beforeEach(function() {
-			theHorizonDrifter = new PirateShip({cannons: 6});
+			theHorizonDrifter.crew = [];
 		});
 
 		it("should return an object who's constructor is PirateShip", function() {
@@ -27,8 +29,24 @@ describe("the constructor, ", function() {
 		it(".push() should add one to crew array", function() {
 
 			var length = theHorizonDrifter.crew.length
-			theHorizonDrifter.push(new Mate())
+			theHorizonDrifter.add(new Pirate("Bob", new Mate))
 			expect(theHorizonDrifter.crew.length).toBe(length + 1);
+		});
+
+		it(".chooseCaptain() should not make a Mate captain with less than 3 mates onboard", function() {
+
+			theHorizonDrifter.add(new Pirate("Bob", new Mate))
+			theHorizonDrifter.add(new Pirate("Bob", new Mate))
+			theHorizonDrifter.chooseCaptain()
+
+			var captainExists = false;
+			theHorizonDrifter.crew.forEach(function(pirate) {
+				if(pirate.role.title === "Captain") {
+					captainExists = true;
+				}
+			});
+
+			expect(captainExists).toBe(false);
 		});
 
 	});
@@ -44,21 +62,35 @@ describe("the constructor, ", function() {
 
 		describe("Captain", function() {
 
+			beforeEach(function() {
+				theHorizonDrifter.crew = [];
+			});
+
 			it(".role.walkPlankCommand() should remove 1 Mate from crew", function() {
+				
+				theHorizonDrifter.add(new Pirate("Dude", new Captain()));
+				theHorizonDrifter.add(new Pirate("Guy", new Mate()));
 				var length = theHorizonDrifter.crew.length;
-				captainBob = new Pirate(new Captain());
-				captainBob.role.walkPlankCommand
+
+				theHorizonDrifter.crew[0].role.walkPlankCommand(theHorizonDrifter, "Guy");
 				expect(theHorizonDrifter.crew.length).toBe(length - 1);
 			});
 
-			it(".role.chooseFirstMate() should return a randomly promoted Mate who now is FirstMate", function() {
+			it(".role.chooseFirstMate() should return a (randomly) promoted Mate who now is FirstMate", function() {
 				
-				var firstMateBill = captain.role.chooseFirstMate()
-				expect(Ship.crew.length).toBe("First Mate");
+				theHorizonDrifter.add(new Pirate("Dude", new Captain()));
+				theHorizonDrifter.add(new Pirate("Guy", new Mate()));
+
+				theHorizonDrifter.crew[0].role.chooseFirstMate(theHorizonDrifter);
+				expect(theHorizonDrifter.crew[1].role.title).toBe("First Mate");
 			});
 		});
 
 		describe("FirstMate", function() {
+
+			beforeEach(function() {
+				theHorizonDrifter.crew = [];
+			});
 
 			it("should return an object who's constructor is Priate", function() {
 
@@ -69,17 +101,22 @@ describe("the constructor, ", function() {
 
 		describe("Mate", function() {
 
-			it(".role.title should return correct title", function() {
-
-				mateBob = new Pirate(new Mate());
-				expect(mateBob.role.title).toBe("Mate");
+			beforeEach(function() {
+				theHorizonDrifter.crew = [];
 			});
 
-			it("voteOnCaptain() should decide which mate is captain by random choice", function() {
+			it(".role.title should return correct title", function() {
 
-				var newCaptain = theHorizonDrifter.vote()
+				theHorizonDrifter.add(new Pirate("Guy", new Mate()));
+				expect(theHorizonDrifter.crew[0].role.title).toBe("Mate");
+			});
 
-				expect(newCaptain.title).toBe("Captain");
+			it("voteOnCaptain() should return a random number between 0 and theHorizonDrifter.crew.length", function() {
+
+				theHorizonDrifter.add(new Pirate("Dude", new Mate()));
+				var x = theHorizonDrifter.crew[0].role.voteOnCaptain(theHorizonDrifter.crew.length);
+
+				expect(x).toBe(0);
 			});
 		});
 	});
