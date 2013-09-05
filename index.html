@@ -9,11 +9,11 @@
 	<h2>Pirates!</h2>
   <ul>
     <li><strong>Create a ship:</strong> exampleShip = new PirateShip()</li>
-    <li><strong>Add a pirate:</strong> exampleShip.add(new Pirate("ExampleDude", new Mate()))</li>
+    <li><strong>Add a pirate:</strong> exampleShip.add($.extend(new Pirate("exampleDude"), mateAttrs);</li>
     <li><strong>Make at least 3 pirates and you can vote on a Captain:</strong> exampleShip.chooseCaptain()</li>
-    <li><strong>The Captain can choose a First Mate:</strong> exampleShip.crew[indexOfCaptain].role.chooseFirstMate(exampleShip)</li>
-    <li><strong>The Captain can also command mates to walk the plank:</strong> exampleShip.crew[indexOfCaptain].role.walkPlankCommand(exampleShip, "exampleDude")</li>
-    <li><strong>Watch out, Captain! The First Mate can attempt a mutiny! (not working yet):</strong> exampleShip.crew[indexOfFirstMate].role.attemptMutiny(exampleShip)</li>
+    <li><strong>The Captain can choose a First Mate:</strong> exampleShip.captain.chooseFirstMate()</li>
+    <li><strong>The Captain can also command mates to walk the plank:</strong> exampleShip.captain.walkPlankCommand("exampleDude")</li>
+    <li><strong>Watch out, Captain! The First Mate can attempt a mutiny!:</strong> exampleShip.firstMate.attemptMutiny()</li>
   </ul>
 
 
